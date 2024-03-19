@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Suppose we have data of house sizes (in square feet) and their corresponding prices
+# This is just example data for demonstration
+house_sizes = np.array([600, 800, 1000, 1200, 1500, 1800, 2000]).reshape(-1, 1)  # Reshape for single feature
+house_prices = np.array([100000, 120000, 150000, 170000, 200000, 230000, 250000])
+
+# Add a column of ones to house_sizes for the bias term
+X_b = np.c_[np.ones((len(house_sizes), 1)), house_sizes]
+
+# Use the Normal Equation to find the best fit line
+theta_best = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(house_prices)
+
+# Extract the slope (m) and y-intercept (c) from theta_best
+m = theta_best[1]
+c = theta_best[0]
+
+# Print the calculated values
+print("Slope (m):", m)
+print("Y-intercept (c):", c)
+
+# Now let's predict the price of a new house with size 1700 sq. ft.
+new_house_size = 1700
+predicted_price = m * new_house_size + c
+print("Predicted price for a house with size 1700 sq. ft:", predicted_price)
+
+# Plot the data points and the best fit line
+plt.scatter(house_sizes, house_prices, label='House Prices')
+plt.plot(house_sizes, m*house_sizes + c, color='red', label='Best Fit Line')
+plt.scatter(new_house_size, predicted_price, color='green', marker='x', s=100, label='Predicted Price')
+plt.xlabel('House Size (sq. ft)')
+plt.ylabel('Price ($)')
+plt.title('House Price Prediction')
+plt.legend()
+plt.grid(True)
+plt.show()
